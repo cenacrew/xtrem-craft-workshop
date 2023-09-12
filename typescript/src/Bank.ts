@@ -5,35 +5,48 @@ export class Bank {
   private readonly _exchangeRates: Map<string, number> = new Map()
 
   /**
-   * @param currency1
-   * @param currency2
+   * @param from
+   * @param to
    * @param rate
+   * @return {Bank}
    */
-  static withExchangeRate (currency1: Currency, currency2: Currency, rate: number): Bank {
+  static withExchangeRate (from: Currency, to: Currency, rate: number): Bank {
     const bank = new Bank()
-    bank.AddExchangeRate(currency1, currency2, rate)
+    bank.addExchangeRate(from, to, rate)
     return bank
   }
 
   /**
-   * @param currency1
-   * @param currency2
+   * @param from
+   * @param to
    * @param rate
    */
-  AddExchangeRate (currency1: Currency, currency2: Currency, rate: number): void {
-    this._exchangeRates.set(currency1 + '->' + currency2, rate)
+  addExchangeRate (from: Currency, to: Currency, rate: number): void {
+    this._exchangeRates.set(from + '->' + to, rate)
   }
 
   /**
    * @param amount
-   * @param currency1
-   * @param currency2
+   * @param from
+   * @param to
+   * @return {number}
    */
-  Convert (amount: number, currency1: Currency, currency2: Currency): number {
-    if (!(currency1 === currency2 || this._exchangeRates.has(currency1 + '->' + currency2))) { throw new MissingExchangeRateError(currency1, currency2) }
+  convert (amount: number, from: Currency, to: Currency): number {
+    if (!(this.canConvert(from, to))) { throw new MissingExchangeRateError(from, to) }
 
-    return currency2 === currency1
+    return from === to
         ? amount
-        : amount * this._exchangeRates.get(currency1 + '->' + currency2)
+        : amount * this._exchangeRates.get(from + '->' + to)
+  }
+  
+
+  /**
+   * @param from
+   * @param to
+   * @private
+   * @return {boolean}
+   */
+  private canConvert(from: Currency, to: Currency): boolean {
+    return from === to || this._exchangeRates.has(from + '->' + to)
   }
 }
