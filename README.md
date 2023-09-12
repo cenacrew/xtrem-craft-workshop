@@ -52,3 +52,14 @@ We have structured this workshop using the [4C model](https://www.bowperson.com/
 - [Concepts](docs/concepts.md)
 - [Concrete Practice](docs/facilitation.md)
 - [Conclusion](docs/conclusion.md)
+
+
+Members of the Project :
+Sourdois Pajot Valentin
+Briend Donovan
+Baril Adrien
+Sence Edouard
+Braye Lecureuil Thibaut
+
+Choice of Language :
+TypeScript
