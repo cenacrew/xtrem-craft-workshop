@@ -2,16 +2,30 @@ import { Currency } from '../src/Currency'
 import { MoneyCalculator } from '../src/MoneyCalculator'
 
 describe('Money', function () {
-  test('add in usd returns number', () => {
-    expect(MoneyCalculator.Add(5, Currency.USD, 10)).toBeNumber()
-    expect(MoneyCalculator.Add(5, Currency.USD, 10)).not.toBeNull()
+  test('add returns number', () => {
+
+    // 1
+
+    let actual = MoneyCalculator.add(5, 10)
+    
+    expect(actual).toBeNumber()
+
+    // 2
+
+    actual = MoneyCalculator.add(5, 10)
+
+    expect(actual).not.toBeNull()
   })
 
-  test('multiply in eur returns positive number', () => {
-    expect(MoneyCalculator.Times(10, Currency.EUR, 2)).toBeGreaterThan(0)
+  test('multiply returns positive number', () => {
+    const actual = MoneyCalculator.times(10, 2)
+    
+    expect(actual).toBeGreaterThan(0)
   })
 
-  test('divide in korean won returns number', () => {
-    expect(1000.5, ).toBe(MoneyCalculator.Divide(4002, Currency.KRW, 4))
+  test('divide returns number', () => {
+    const actual = MoneyCalculator.divide(4002, 4)
+    
+    expect(actual).toBe(1000.5)
   })
 })
