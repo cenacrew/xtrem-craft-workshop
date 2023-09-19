@@ -1,6 +1,6 @@
 # Concept
 
-> definition
+-
 
 ## Properties
 
