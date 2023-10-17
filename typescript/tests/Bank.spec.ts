@@ -23,7 +23,7 @@ describe('Bank', function () {
   test('convert throws error in case of missing exchange rates', () => {
     const bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
     
-    const actual = bank.convert(10, Currency.EUR, Currency.KRW)
+    const actual = () => bank.convert(10, Currency.EUR, Currency.KRW)
     
     expect(actual).toThrow(MissingExchangeRateError)
   })
