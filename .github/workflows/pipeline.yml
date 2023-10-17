@@ -35,5 +35,5 @@ jobs:
       working-directory: ./typescript
     - run: npm run tdd
       working-directory: ./typescript
-    - run: npm coverage
+    - run: npm run coverage
       working-directory: ./typescript
