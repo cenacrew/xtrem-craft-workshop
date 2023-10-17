@@ -33,7 +33,7 @@ jobs:
       working-directory: ./typescript
     - run: npm test
       working-directory: ./typescript
-    - run: npm tdd
+    - run: npm run tdd
       working-directory: ./typescript
     - run: npm coverage
       working-directory: ./typescript
