@@ -4,14 +4,17 @@ import { Bank } from './Bank'
 export class Portfolio {
     private values : Map<Currency,number> = new Map()
 
-    add(arg0: number, EUR: Currency) {
-        this.values.set(EUR,arg0)
+    add(amount: number, currency: Currency) {
+        if (this.values.has(currency)) {
+            amount += this.values.get(currency)
+        }
+        this.values.set(currency,amount)
     }
 
     evaluate(currency: Currency, bank: Bank): number {
-        const result = 0
-        this.values.forEach(value => )
-        return this.values.get(currency) ?? 0
+        let result: number = 0
+        this.values.forEach((value : number, orignalCurrency : Currency) => result += bank.convert(value,orignalCurrency,currency))
+        return result
     }
     
 

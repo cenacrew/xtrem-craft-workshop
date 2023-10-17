@@ -21,7 +21,7 @@ describe('Portfolio', function () {
 
     test('Value of the portfolio with multiple currency', ()=>{
         const portfolio = new Portfolio()
-        const bank = Bank.withExchangeRate(Currency.USD, Currency.EUR, 0.82)
+        const bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
         portfolio.add(10,Currency.EUR)
         portfolio.add(5,Currency.USD)
         const amount = portfolio.evaluate(Currency.EUR, bank)
@@ -30,7 +30,7 @@ describe('Portfolio', function () {
 
     test('Value of the portfolio with multiple currency and two time the same currency', ()=>{
         const portfolio = new Portfolio()
-        const bank = Bank.withExchangeRate(Currency.USD, Currency.EUR, 0.82)
+        const bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
         portfolio.add(10,Currency.EUR)
         portfolio.add(20,Currency.EUR)
         portfolio.add(5,Currency.USD)
