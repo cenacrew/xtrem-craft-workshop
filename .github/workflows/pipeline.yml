@@ -27,6 +27,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: npm i
+      working-directory: ./typescript
     - run: npm test
       working-directory: ./typescript
     - run: npm tdd
