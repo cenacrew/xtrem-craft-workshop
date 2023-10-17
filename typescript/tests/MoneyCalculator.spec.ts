@@ -1,5 +1,6 @@
 import { Currency } from '../src/Currency'
 import { MoneyCalculator } from '../src/MoneyCalculator'
+import { Money } from '../src/Money'
 
 describe('Money', function () {
   test('add returns number', () => {
@@ -27,5 +28,14 @@ describe('Money', function () {
     const actual = MoneyCalculator.divide(4002, 4)
     
     expect(actual).toBe(1000.5)
+  })
+})
+
+describe('Money', function () {
+  test('should add moneys', () => {
+    const money = new Money(5, Currency.USD);
+    const sum = money.add(new Money(10, Currency.USD));
+
+    expect(sum).toEqual(new Money(15, Currency.USD));
   })
 })
