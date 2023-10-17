@@ -27,6 +27,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: npm install -g stryker
+      working-directory: ./typescript
     - run: npm i
       working-directory: ./typescript
     - run: npm test
