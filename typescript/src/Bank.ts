@@ -1,5 +1,6 @@
 import {Currency} from './Currency'
 import {MissingExchangeRateError} from './MissingExchangeRateError'
+import { Money } from './Money'
 
 export class Bank {
   private readonly _exchangeRates: Map<string, number> = new Map()
@@ -31,22 +32,30 @@ export class Bank {
    * @param to
    * @return {number}
    */
-  convert (amount: number, from: Currency, to: Currency): number {
-    if (!(this.canConvert(from, to))) { throw new MissingExchangeRateError(from, to) }
+  convert (amount: number, from: Currency, to: Currency, money1 : Money = Money.create(amount, from)): number {
+    const money: Money = money1
+    return this.ConvertMoney(money, to).amount
+  }
 
-    return from === to
-        ? amount
-        : amount * this._exchangeRates.get(from + '->' + to)
+  ConvertMoney(money: Money, to: Currency): Money {
+    if (!this.canConvert(money,to)) { throw new MissingExchangeRateError(money.currency, to) }
+
+    return money.hasCurrency(to)
+        ? money
+        : money.convert(this._exchangeRates.get(this.getExchangeRate(money, to)),to) 
+  }
+
+  getExchangeRate(money: Money, to: Currency): string {
+    return money.currency + '->' + to
   }
   
-
   /**
    * @param from
    * @param to
    * @private
    * @return {boolean}
    */
-  private canConvert(from: Currency, to: Currency): boolean {
-    return from === to || this._exchangeRates.has(from + '->' + to)
+  public canConvert(money: Money, to: Currency): boolean {
+    return money.hasCurrency(to) || this._exchangeRates.has(this.getExchangeRate(money,to))
   }
 }

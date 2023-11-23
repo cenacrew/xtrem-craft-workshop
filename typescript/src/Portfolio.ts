@@ -1,22 +1,19 @@
 import {Currency} from './Currency'
 import { Bank } from './Bank'
+import { Money } from './Money'
+
 
 export class Portfolio {
-    private values : Map<Currency,number> = new Map()
+    private values : Array<Money> = new Array()
 
-    add(amount: number, currency: Currency) {
-        if (this.values.has(currency)) {
-            amount += this.values.get(currency)
-        }
-        this.values.set(currency,amount)
+    add(money : Money) {
+        this.values.push(money);
     }
 
-    evaluate(currency: Currency, bank: Bank): number {
-        let result: number = 0
-        this.values.forEach((value : number, orignalCurrency : Currency) => result += bank.convert(value,orignalCurrency,currency))
-        return result
+    evaluate(currency: Currency, bank: Bank): number {  
+        let result: Money = Money.create(0, currency)
+        this.values.forEach((value : Money) => result = result.add(bank.ConvertMoney(value, currency)))
+        return result.amount
     }
     
-
-
 }
