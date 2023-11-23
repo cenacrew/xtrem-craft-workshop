@@ -4,6 +4,12 @@ import { Money } from './Money'
 
 export class Bank {
   private readonly _exchangeRates: Map<string, number> = new Map()
+  private readonly _pivot: Currency
+
+  constructor(pivot: Currency) {
+    if (pivot == null) { throw new Error('Missing pivot currency') }
+    this._pivot = pivot
+  }
 
   /**
    * @param from
@@ -12,7 +18,7 @@ export class Bank {
    * @return {Bank}
    */
   static withExchangeRate (from: Currency, to: Currency, rate: number): Bank {
-    const bank : Bank = new Bank()
+    const bank : Bank = new Bank(from)
     bank.addExchangeRate(from, to, rate)
     return bank
   }
@@ -23,8 +29,18 @@ export class Bank {
    * @param rate
    */
   addExchangeRate (from: Currency, to: Currency, rate: number): void {
-    this._exchangeRates.set(from + '->' + to, rate)
+    if (from != this._pivot && to != this._pivot) { 
+      throw new Error('Cannot add exchange rate for non-pivot currency') 
+    }
+    else if (from == to) { 
+      this._exchangeRates.set(from + '->' + to, 1.0)
+    }
+    else{
+      this._exchangeRates.set(from + '->' + to, rate)
+    }
   }
+
+
 
   /**
    * @param amount
@@ -39,14 +55,15 @@ export class Bank {
 
   ConvertMoney(money: Money, to: Currency): Money {
     if (!this.canConvert(money,to)) { throw new MissingExchangeRateError(money.currency, to) }
-
+    console.log(typeof(this._exchangeRates.get(this.getExchangeRateName(money.currency,this._pivot))))
     return money.hasCurrency(to)
         ? money
-        : money.convert(this._exchangeRates.get(this.getExchangeRate(money, to)),to) 
+        : money.convert(this._exchangeRates.get(this.getExchangeRateName(money.currency,this._pivot)),this._pivot).convert(this._exchangeRates.get(this.getExchangeRateName(this._pivot,to)),to)
   }
 
-  getExchangeRate(money: Money, to: Currency): string {
-    return money.currency + '->' + to
+
+  getExchangeRateName(from : Currency, to: Currency): string {
+    return from + '->' + to
   }
   
   /**
@@ -56,6 +73,6 @@ export class Bank {
    * @return {boolean}
    */
   public canConvert(money: Money, to: Currency): boolean {
-    return money.hasCurrency(to) || this._exchangeRates.has(this.getExchangeRate(money,to))
+    return money.hasCurrency(to) || this._exchangeRates.has(this.getExchangeRateName(money.currency,to))
   }
 }

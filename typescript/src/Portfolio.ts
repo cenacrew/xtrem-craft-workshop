@@ -9,7 +9,7 @@ export class Portfolio {
     add(money : Money) {
         this.values.push(money);
     }
-
+    
     evaluate(currency: Currency, bank: Bank): number {  
         let result: Money = Money.create(0, currency)
         this.values.forEach((value : Money) => result = result.add(bank.ConvertMoney(value, currency)))
